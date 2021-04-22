@@ -12,22 +12,32 @@ class Main extends Component {
   };
 
   searchMovies = async (value, type = 'all') => {
-    this.setState({ loading: true });
-    const response = await fetch(
-      `http://www.omdbapi.com/?apikey=${API_KEY}&s=${value}${
-        type !== 'all' ? `&type=${type}` : ''
-      }`
-    );
-    const data = await response.json();
-    this.setState({ movies: data.Search, loading: false });
+    try {
+      this.setState({ loading: true });
+      const response = await fetch(
+        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${value}${
+          type !== 'all' ? `&type=${type}` : ''
+        }`
+      );
+      const data = await response.json();
+      this.setState({ movies: data.Search, loading: false });
+    } catch (e) {
+      console.error(e);
+      this.setState({ loading: false });
+    }
   };
 
   async componentDidMount() {
-    const response = await fetch(
-      `http://www.omdbapi.com/?apikey=${API_KEY}&s=matrix`
-    );
-    const movies = await response.json();
-    this.setState({ movies: movies.Search, loading: false });
+    try {
+      const response = await fetch(
+        `https://www.omdbapi.com/?apikey=${API_KEY}&s=matrix`
+      );
+      const movies = await response.json();
+      this.setState({ movies: movies.Search, loading: false });
+    } catch (e) {
+      console.error(e);
+      this.setState({ loading: false });
+    }
   }
 
   render() {
